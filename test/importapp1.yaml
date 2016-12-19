@@ -1,0 +1,5 @@
+App:  testApp
+Component: testComponet2
+Ips:
+  - Ip: 192.168.11.52
+  - Ip: 192.168.11.51

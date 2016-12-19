@@ -1,0 +1,38 @@
+{
+	"ImportPath": "github.com/yansmallb/assigner",
+	"GoVersion": "go1.5rc1",
+	"Deps": [
+		{
+			"ImportPath": "github.com/Sirupsen/logrus",
+			"Comment": "v0.8.7-53-g446d1c1",
+			"Rev": "446d1c146faa8ed3f4218f056fcd165f6bcfda81"
+		},
+		{
+			"ImportPath": "github.com/coreos/etcd/client",
+			"Comment": "v2.3.0-alpha.0-185-g0eb46eb",
+			"Rev": "0eb46eb1457bf277a5d6093287290b2b5cd6a964"
+		},
+		{
+			"ImportPath": "github.com/coreos/etcd/pkg/pathutil",
+			"Comment": "v2.3.0-alpha.0-185-g0eb46eb",
+			"Rev": "0eb46eb1457bf277a5d6093287290b2b5cd6a964"
+		},
+		{
+			"ImportPath": "github.com/coreos/etcd/pkg/types",
+			"Comment": "v2.3.0-alpha.0-185-g0eb46eb",
+			"Rev": "0eb46eb1457bf277a5d6093287290b2b5cd6a964"
+		},
+		{
+			"ImportPath": "github.com/ugorji/go/codec",
+			"Rev": "cd43bdd6be4b5675a0d1e75c4af55ee1dc0d9c5e"
+		},
+		{
+			"ImportPath": "golang.org/x/net/context",
+			"Rev": "21af302bb52737bcf1e6ce0128ec5932bf0d8ae9"
+		},
+		{
+			"ImportPath": "gopkg.in/yaml.v2",
+			"Rev": "f7716cbe52baa25d2e9b0d0da546fcf909fc16b4"
+		}
+	]
+}
