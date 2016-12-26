@@ -2,9 +2,25 @@ package cli
 
 import (
 	log "github.com/Sirupsen/logrus"
+	"github.com/liuchjlu/commiter/datatype"
 	"os"
 )
 
+var ContainInfo datatype.ContainerInfo
+
+// type ContainerInfo struct {
+// 	Id         string
+// 	Ip         string
+// 	App        string
+// 	Component  string
+// 	ImageName  string
+// 	Repository string
+// 	HostIp     string
+// }
+
+func init() {
+
+}
 func Run() {
 	if len(os.Args) == 1 {
 		help()

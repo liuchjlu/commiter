@@ -6,6 +6,7 @@ import (
 	"os"
 
 	log "github.com/Sirupsen/logrus"
+	"github.com/liuchjlu/commiter/ip"
 )
 
 func main() {
@@ -23,5 +24,7 @@ func main() {
 	log.SetLevel(log.DebugLevel)
 
 	log.Infoln("main.main():Start Imgcommit Main")
+	ip, _ := ip.Getcontaineripfromcommiter("204-databus-19216811123:161221", "http://192.168.11.52:2379", "204", "databus")
+	log.Infof("container ip:%+v\n", ip)
 	cli.Run()
 }
