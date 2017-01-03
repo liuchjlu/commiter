@@ -1,0 +1,12 @@
+#!/bin/bash
+mkdir -p /home/commiter
+cd /home/commiter
+ftp -n -i <<-EOF
+open {{.FtpServer}}
+user {{.UserName}} {{.PassWord}}
+binary
+cd {{.App}}
+cd {{.Component}}
+mget {{.TemplateName}}
+bye
+EOF

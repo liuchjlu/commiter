@@ -29,7 +29,7 @@ func importapp(filepath string, etcdpath string, state string) error {
 	//create ip dir to etcd
 	path := ""
 	for _, ip := range app.Ips {
-		path = etcdclient.BasePath + "/" + ip.Ip + "/"
+		path = "/commiter" + "/images/" + ip.Ip + "/"
 
 		err = client.CreateAbsoluteDir(path)
 		path = path + app.App + "/"
@@ -37,6 +37,10 @@ func importapp(filepath string, etcdpath string, state string) error {
 		path = path + app.Component + "/"
 		err = client.CreateAbsoluteDir(path)
 		_, err = client.CreateAbsoluteKey(path+"state", state)
+		if err != nil {
+			log.Errorf("cli.importapp():%+v\n", err)
+		}
+		_, err = client.CreateAbsoluteKey(path+"repository", app.Repository)
 		if err != nil {
 			log.Errorf("cli.importapp():%+v\n", err)
 		}

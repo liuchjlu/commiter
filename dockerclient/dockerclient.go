@@ -30,11 +30,10 @@ func Dockerps() ([]types.Container, error) {
 		log.Fatalf("cli.Dockerps():%+v\n", err)
 		return nil, err
 	}
-	log.Debugf("cli.Dockerps(): containers=%+v\n", containers)
-	log.Debugf("image====================%+v\n", containers[0].Image)
-
+	// log.Debugf("cli.Dockerps(): containers=%+v\n", containers)
+	// log.Debugf("image====================%+v\n", containers[0].Image)
+	log.Infoln("dockerclient.DockerPs(): Successful get ContainerList.")
 	return containers, err
-
 }
 
 func Dockercommit(id string, name string, tag string) (types.IDResponse, error) {
@@ -59,13 +58,12 @@ func Dockercommit(id string, name string, tag string) (types.IDResponse, error) 
 	}
 	log.Debugf("cli.Dockerpcommit(): CommitResponse=%+v\n", commitresponse)
 	log.Infof("cli.dockercommit(): dockercommit() finished")
-	Dockerpush()
-	log.Infof("cli.dockercommit(): dockerpush() finished")
-	return commitresponse, err
+	Dockerpush(name + ":" + tag)
 
+	return commitresponse, err
 }
 
-func Dockerpush() {
+func Dockerpush(imagename string) {
 	client, err := docker_client.NewClient(docker_client.DefaultDockerHost, "", nil, nil)
 
 	if err != nil {
@@ -79,7 +77,7 @@ func Dockerpush() {
 		//PrivilegeFunc: privilegeFunc,
 	}
 
-	ioreadcloser, err := client.ImagePush(context.Background(), "192.168.11.51:5000/201-cache:20161220", push_options)
+	ioreadcloser, err := client.ImagePush(context.Background(), imagename, push_options)
 	// log.Debugln("#222")
 
 	// log.Debugln("#333")
@@ -87,6 +85,7 @@ func Dockerpush() {
 		log.Fatalf("cli.Dockerpush():%+v\n", err)
 		return
 	}
+	log.Infof("cli.dockercommit(): dockerpush() finished")
 	// log.Debugln("#444")
 	ioreadcloser.Close()
 	//fmt.Println(containers)

@@ -9,12 +9,12 @@ import (
 )
 
 var (
-	BasePath string = "/images/"
+	BasePath string = "/commiter/ips/"
 )
 
 //get ip of Physical machine
 func Getip() (string, error) {
-	addrsbr0, err := net.InterfaceByName("eth0")
+	addrsbr0, err := net.InterfaceByName("br0")
 	if err != nil {
 		log.Fatalf("ip.Getip():%+v\n", err)
 		return "", err
@@ -27,6 +27,19 @@ func Getip() (string, error) {
 	}
 	log.Debugf("ip.Getip(): ip=%+v\n", ip_info[0])
 	return ip_info[0], nil
+}
+func GetContainerIp(imagename, containerid, etcdpath string) (string, error) {
+	log.Infoln("ip.GetContainerIp(): Strat getting container ip from commiter")
+	commiterip, err := Getcontaineripfromcommiter(strings.Split(imagename, "/")[1], etcdpath)
+	if commiterip == "" {
+		log.Infof("ip.GetContainerIp(). Commiter do not have the ip of this container. Container id:%+v Container image:%+v\n", containerid, imagename)
+	} else {
+		log.Infof("ip.GetContainerIp(). Successful get container ip. Container ip:%+v Container id:%+v Container image:%+v\n", commiterip, containerid, imagename)
+		return commiterip, err
+	}
+	log.Infoln("Ip.GetContainerIp(): Start getting container ip from assigner")
+	assignerip, err := Getcontaineripfromassigner(containerid, etcdpath)
+	return assignerip, err
 }
 
 //get ip of virtual machine
@@ -47,13 +60,13 @@ func Getcontaineripfromassigner(containerid, etcdpath string) (string, error) {
 
 	return ip, err
 }
-func Getcontaineripfromcommiter(imagename, etcdpath, app, component string) (string, error) {
+func Getcontaineripfromcommiter(imagename, etcdpath string) (string, error) {
 	client, err := etcdclient.NewEtcdClient(etcdpath)
 	if err != nil {
 		log.Errorf("cli.query():%+v\n", err)
 		return "", err
 	}
-	ip, err := client.GetAbsoluteKey(BasePath + app + "/" + component + "/" + imagename)
+	ip, err := client.GetAbsoluteKey(BasePath + imagename)
 	//Response, err := client.GetAbsoluteDir("/images/204/databus")
 	if err != nil {
 		log.Debugf("ip.Getcontaineripfromcommiter()  Failed to  get container ip from commiter: %+v\n", err)

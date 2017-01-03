@@ -1,0 +1,11 @@
+#!/bin/bash
+cd /home/commiter
+ftp -n -i <<-EOF
+open {{.FtpServer}}
+user {{.UserName}} {{.PassWord}}
+binary
+cd {{.App}}
+cd {{.Component}}
+mput {{.PodRc}}
+bye
+EOF

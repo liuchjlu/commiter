@@ -1,5 +1,5 @@
-App:  testApp
-Component: testComponents
+App:  liuchjlu
+Component: commiter
+Repository: 192.158.11.51:5000
 Ips:
   - Ip: 192.168.11.52
-  - Ip: 192.168.11.51

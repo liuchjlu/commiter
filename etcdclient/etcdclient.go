@@ -16,9 +16,10 @@ type Etcd struct {
 }
 
 type App struct {
-	App       string `App`
-	Component string `Component`
-	Ips       []Ip   `Ips`
+	App        string `App`
+	Component  string `Component`
+	Repository string `Repository`
+	Ips        []Ip   `Ips`
 }
 
 type Ip struct {
@@ -27,10 +28,14 @@ type Ip struct {
 }
 
 var ServcieTimeout = 50 * time.Second
-var BasePath = "/images"
+var BasePath = "/assigner"
 var AppsPath = BasePath + "/apps/"
+var ImagePath = BasePath + "/images/"
 var IpsPath = BasePath + "/ips/"
 var ConfigPath = BasePath + "/config"
+var CommiterBasePath = "/commiter"
+var CommiterIpsPath = CommiterBasePath + "/ips/"
+var CommiterImagePath = CommiterBasePath + "/images/"
 
 func NewEtcdClient(etcdpath string) (*Etcd, error) {
 	endpoints := strings.Split(etcdpath, ",")
@@ -53,8 +58,8 @@ func (e *Etcd) CreateKey(key, value string) (string, error) {
 	opt := &client.SetOptions{
 		PrevExist: client.PrevNoExist,
 	}
-	log.Debugf("etcdclient.CreateKey():key=%+v,value=%+v", IpsPath+key, value)
-	Response, err := e.client.Set(context.Background(), IpsPath+key, value, opt)
+	log.Debugf("etcdclient.CreateKey():key=%+v,value=%+v", key, value)
+	Response, err := e.client.Set(context.Background(), key, value, opt)
 	if err != nil {
 		return "", err
 	}
@@ -138,7 +143,6 @@ func (e *Etcd) QueryContainerid(containerid string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-
 	rep, err := regexp.Compile(containerid + ".*")
 	if err != nil {
 		log.Errorf("etcdclient.QueryContainerid(): regexp error, err=", err)
