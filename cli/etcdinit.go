@@ -5,7 +5,7 @@ import (
 	"github.com/liuchjlu/commiter/etcdclient"
 )
 
-func manage(apiserver, etcdpath string) {
+func manage(apiserver, ftpserver, etcdpath string) {
 	log.Infoln("cli.manage() start manage.")
 	client, err := etcdclient.NewEtcdClient(etcdpath)
 	if err != nil {
@@ -19,6 +19,10 @@ func manage(apiserver, etcdpath string) {
 
 	//create config on etcd
 	_, err = client.CreateAbsoluteKey("/commiter/config/apiserver", apiserver)
+	if err != nil {
+		log.Fatalf("cli.manage() client.createabsolutekey err:", err)
+	}
+	_, err = client.CreateAbsoluteKey("/commiter/config/ftpserver", ftpserver)
 	if err != nil {
 		log.Fatalf("cli.manage() client.createabsolutekey err:", err)
 	}

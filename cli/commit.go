@@ -69,7 +69,8 @@ func Commit(etcdpath string) {
 				log.Infof("cli.Commit(): state_to_false()  finish")
 
 				//set <imagename:ip>  to etcd path:/commiter/ips
-				createips, err := client.CreateAbsoluteKey("/commiter/ips/"+strings.Split(imagename, "/")[1]+":"+date, containerip)
+				image := strings.Split(imagename, "/")
+				createips, err := client.CreateAbsoluteKey("/commiter/ips/"+image[len(image)-1]+":"+date, containerip)
 				if err != nil {
 					log.Errorf("cli.commit() failed to create the <imagename:ip> in etcd:%+v\n", err)
 				}

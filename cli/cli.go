@@ -53,7 +53,12 @@ func Run() {
 		Commit(os.Args[2])
 	}
 	if command == "manage" {
-		manage(os.Args[2], os.Args[3])
+		if len(os.Args) != 5 {
+			importErr := "the `manage` command takes three arguments. See help"
+			log.Errorln(importErr)
+			return
+		}
+		manage(os.Args[2], os.Args[3], os.Args[4])
 	}
 	if command == "help" {
 		help()
