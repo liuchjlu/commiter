@@ -58,7 +58,7 @@ func Dockercommit(id string, name string, tag string) (types.IDResponse, error) 
 	}
 	log.Debugf("cli.Dockerpcommit(): CommitResponse=%+v\n", commitresponse)
 	log.Infof("cli.dockercommit(): dockercommit() finished")
-	Dockerpush(name + ":" + tag)
+	DockerPush(name + ":" + tag)
 
 	return commitresponse, err
 }
@@ -85,6 +85,39 @@ func Dockerpush(imagename string) {
 		log.Fatalf("cli.Dockerpush():%+v\n", err)
 		return
 	}
+	log.Infof("dockerclient.Dockerpush() ************IoReadCloser=", ioreadcloser)
+	log.Infof("cli.dockercommit(): dockerpush() finished")
+	// log.Debugln("#444")
+	ioreadcloser.Close()
+	//fmt.Println(containers)
+	return
+
+}
+
+//Use DockerEnvClient
+func DockerPush(imagename string) {
+	//client, err := docker_client.NewClient(docker_client.DefaultDockerHost, "", nil, nil)
+	client, err := docker_client.NewEnvClient()
+	if err != nil {
+		log.Fatalf("cli.Dockerps():%+v\n", err)
+		return
+	}
+	defer client.Close()
+	//log.Debugln("#111")
+	push_options := types.ImagePushOptions{
+		RegistryAuth: "NotValid",
+		//PrivilegeFunc: privilegeFunc,
+	}
+
+	ioreadcloser, err := client.ImagePush(context.Background(), imagename, push_options)
+	// log.Debugln("#222")
+
+	// log.Debugln("#333")
+	if err != nil {
+		log.Fatalf("cli.Dockerpush():%+v\n", err)
+		return
+	}
+	log.Infof("dockerclient.Dockerpush() ************IoReadCloser=", ioreadcloser)
 	log.Infof("cli.dockercommit(): dockerpush() finished")
 	// log.Debugln("#444")
 	ioreadcloser.Close()

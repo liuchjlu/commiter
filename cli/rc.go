@@ -79,14 +79,6 @@ func Rc(app, component, containerip, containername, image, etcdpath string) {
 func BuildYaml(app, component, containerip, image, containername string) {
 	filepath := "/home/commiter/"
 	os.MkdirAll(filepath, 0755)
-	podrcname := app + "rc-" + component + "-" + containerip + ".yaml"
-	filename := filepath + podrcname
-	dstFile, err := os.Create(filename)
-	defer dstFile.Close()
-	if err != nil {
-		log.Fatalf("cli.BuildYaml() os.create(file) failed:%+v\n", err)
-		return
-	}
 	podname := strings.Split(containername, "_")[2]
 	log.Infof("cli.BuildYaml() podname=%+v\n", podname)
 	if len(strings.Split(podname, "-")) == 3 {
@@ -97,6 +89,14 @@ func BuildYaml(app, component, containerip, image, containername string) {
 		log.Debugf("cli.BUildYaml component:%+v\n", component)
 	} else {
 		log.Fatalf("cli.BuildDownload(): There are some error when get component name.")
+	}
+	podrcname := app + "rc-" + component + "-" + containerip + ".yaml"
+	filename := filepath + podrcname
+	dstFile, err := os.Create(filename)
+	defer dstFile.Close()
+	if err != nil {
+		log.Fatalf("cli.BuildYaml() os.create(file) failed:%+v\n", err)
+		return
 	}
 	templatename := app + "rc-" + component + ".yaml"
 	log.Debugf("cli.BuildYaml =====templatename:%+v\n", templatename)

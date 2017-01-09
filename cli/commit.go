@@ -53,7 +53,23 @@ func Commit(etcdpath string) {
 					log.Fatalf("cli.commit(). ip.getcontaineripfromassigner:%+v\n", err)
 				}
 				log.Debugf("cli.commit(). ip.getcontainerip:%+v\n", containerip)
-				imagename := info.Repository + "/" + info.App + "-" + info.Component + "-" + containerip
+
+				//get component name with the info of layer
+				containername := container.Names[0]
+				component := info.Component
+				podname := strings.Split(containername, "_")[2]
+				log.Infof("cli.Commit() podname=%+v\n", podname)
+				if len(strings.Split(podname, "-")) == 3 {
+					component = component
+					log.Debugf("cli.Commit component:%+v\n", component)
+				} else if len(strings.Split(podname, "-")) == 4 {
+					component = component + "-" + strings.Split(podname, "-")[2]
+					log.Debugf("cli.Commit component:%+v\n", component)
+				} else {
+					log.Fatalf("cli.Commit(): There are some error when get component name.")
+				}
+				//create imagename
+				imagename := info.Repository + "/" + info.App + "-" + component + "-" + containerip
 				log.Infof("cli.commit() dockerclient.Dockercommit imagename:%+v\n", imagename)
 
 				//commit repository/app-componnet-ip:date
