@@ -4,6 +4,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/docker/docker/api/types"
 	docker_client "github.com/docker/docker/client"
+	"github.com/liuchjlu/commiter/cmd"
 	"golang.org/x/net/context"
 )
 
@@ -91,37 +92,17 @@ func Dockerpush(imagename string) {
 	ioreadcloser.Close()
 	//fmt.Println(containers)
 	return
-
 }
 
 //Use DockerEnvClient
 func DockerPush(imagename string) {
-	//client, err := docker_client.NewClient(docker_client.DefaultDockerHost, "", nil, nil)
-	client, err := docker_client.NewEnvClient()
-	if err != nil {
-		log.Fatalf("cli.Dockerps():%+v\n", err)
-		return
+	commandName := "docker"
+	params := []string{"push", imagename}
+	if err := cmd.ExecCommand(commandName, params); !err {
+		log.Fatalf("cli.DockerPush() Error when push image:%+v\n", err)
+	} else {
+		log.Infof("cli.dockercommit(): Dockerpush finished,ImageName:%+v\n", imagename)
 	}
-	defer client.Close()
-	//log.Debugln("#111")
-	push_options := types.ImagePushOptions{
-		RegistryAuth: "NotValid",
-		//PrivilegeFunc: privilegeFunc,
-	}
-
-	ioreadcloser, err := client.ImagePush(context.Background(), imagename, push_options)
-	// log.Debugln("#222")
-
-	// log.Debugln("#333")
-	if err != nil {
-		log.Fatalf("cli.Dockerpush():%+v\n", err)
-		return
-	}
-	log.Infof("dockerclient.Dockerpush() ************IoReadCloser=", ioreadcloser)
-	log.Infof("cli.dockercommit(): dockerpush() finished")
-	// log.Debugln("#444")
-	ioreadcloser.Close()
-	//fmt.Println(containers)
 	return
 
 }

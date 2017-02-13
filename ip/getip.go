@@ -30,7 +30,9 @@ func Getip() (string, error) {
 }
 func GetContainerIp(imagename, containerid, etcdpath string) (string, error) {
 	log.Infoln("ip.GetContainerIp(): Strat getting container ip from commiter")
-	commiterip, err := Getcontaineripfromcommiter(strings.Split(imagename, "/")[1], etcdpath)
+	image := strings.Split(imagename, "/")
+	ImageWithoutRepository := image[len(image)-1]
+	commiterip, err := Getcontaineripfromcommiter(ImageWithoutRepository, etcdpath)
 	if commiterip == "" {
 		log.Infof("ip.GetContainerIp(). Commiter do not have the ip of this container. Container id:%+v Container image:%+v\n", containerid, imagename)
 	} else {
@@ -42,7 +44,7 @@ func GetContainerIp(imagename, containerid, etcdpath string) (string, error) {
 	return assignerip, err
 }
 
-//get ip of virtual machine
+//get the info of ip:getway of virtual machine
 func Getcontaineripfromassigner(containerid, etcdpath string) (string, error) {
 	client, err := etcdclient.NewEtcdClient(etcdpath)
 	if err != nil {
