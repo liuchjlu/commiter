@@ -7,7 +7,7 @@ import (
 func help() {
 	var helpString = `
   Usage: commiter COMMAND [args...]
-  Version: 0.2.2
+  Version: 0.2.4
   Author:liuchjlu
   Email:liucaihong@iie.ac.cn
   Commands:

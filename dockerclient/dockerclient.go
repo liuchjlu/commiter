@@ -59,8 +59,6 @@ func Dockercommit(id string, name string, tag string) (types.IDResponse, error) 
 	}
 	log.Debugf("cli.Dockerpcommit(): CommitResponse=%+v\n", commitresponse)
 	log.Infof("cli.dockercommit(): dockercommit() finished")
-	DockerPush(name + ":" + tag)
-
 	return commitresponse, err
 }
 

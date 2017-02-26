@@ -12,6 +12,7 @@ type ImportInfo struct {
 	App        string
 	Component  string
 	Repository string
+	PushFlag   bool
 }
 
 func Getname(etcdpath string) ([]ImportInfo, error) {
@@ -50,6 +51,16 @@ func Getname(etcdpath string) ([]ImportInfo, error) {
 						str = strings.Split(node_2.Key, "/")
 						InfoOne.App = str[4]
 						InfoOne.Component = str[5]
+						InfoOne.PushFlag = true
+						//app_component = append(app_component, node_2.Key)
+						log.Debugf("cli.Getname() str:%+v\n", str)
+					}
+					if node_2.Value == "2" {
+						flag = true
+						str = strings.Split(node_2.Key, "/")
+						InfoOne.App = str[4]
+						InfoOne.Component = str[5]
+						InfoOne.PushFlag = false
 						//app_component = append(app_component, node_2.Key)
 						log.Debugf("cli.Getname() str:%+v\n", str)
 					}

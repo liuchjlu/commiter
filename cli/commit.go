@@ -95,6 +95,9 @@ func Commit(etcdpath string) {
 				//Rc(app, component, containerip, containername, image, etcdpath string)
 				//create podrc&upload ftpserver:/commiter/app-component
 				Rc(info.App, info.Component, containerip, container.Names[0], imagename+":"+date, etcdpath)
+				if info.PushFlag {
+					dockerclient.DockerPush(imagename + ":" + date)
+				}
 				CommitCount += 1
 			}
 		}

@@ -5,6 +5,7 @@ import (
 	log "github.com/Sirupsen/logrus"
 	"github.com/liuchjlu/commiter/cmd"
 	"github.com/liuchjlu/commiter/etcdclient"
+	"github.com/liuchjlu/commiter/ip"
 	"os"
 	"strings"
 	"text/template"
@@ -88,7 +89,11 @@ func BuildYaml(app, component, containerip, image, containername string) {
 		component = component + "-" + strings.Split(podname, "-")[2]
 		log.Debugf("cli.BUildYaml component:%+v\n", component)
 	} else {
-		log.Fatalf("cli.BuildDownload(): There are some error when get component name.")
+		log.Fatalf("cli.BUildYaml(): There are some error when get component name.")
+	}
+	hostip, err := ip.Getip()
+	if err != nil {
+		log.Errorln("cli.BuildYaml(): Error when get the host ip.")
 	}
 	podrcname := app + "rc-" + component + "-" + containerip + ".yaml"
 	filename := filepath + podrcname
@@ -110,11 +115,13 @@ func BuildYaml(app, component, containerip, image, containername string) {
 		Component   string
 		ContainerIp string
 		Image       string
+		HostIp      string
 	}{
 		App:         app,
 		Component:   component,
 		ContainerIp: containerip,
 		Image:       image,
+		HostIp:      hostip,
 	}
 	err = t.Execute(dstFile, data)
 	if err != nil {
